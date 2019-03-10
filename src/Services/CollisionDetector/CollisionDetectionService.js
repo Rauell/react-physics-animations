@@ -1,6 +1,3 @@
-// import { Vector, Circle, Rectangle } from '../Shapes';
-import Collision from './Collision';
-
 export function didCircleCollideWithBoundingBox(circle, box) {
   const { x, radius} = circle.asObject();
   const boxEdges = box.getEdges();
