@@ -12,7 +12,7 @@ class BallInBox extends Component {
     const initialConditions = {
       x: 800,
       y: 40,
-      vx: 250,
+      vx: 2500 / 1000,
       vy: 0,
       radius: 40,
     };
@@ -37,28 +37,36 @@ class BallInBox extends Component {
   }
 
   foo(frame){
-    const { isRunning } = this.state
+    const { isRunning, circle, boundingBox  } = this.state
     if (!isRunning) return false;
 
-    // console.log("Calling foo");
-    const { circle, boundingBox } = this.state;
-    let { x, y, vx, vy } = circle.asObject();
-    // const { position, velocity } = circle;
+    const circleProps = circle.asObject();
+    const { x, y, vx, vy, radius } = circleProps;
+    let {left, right, top, bottom } = boundingBox.getEdges();
+    left += radius;
+    right -= radius;
 
-    x += frame.timeDiff/1000 * vx;
-    y += frame.timeDiff/1000 * vy;
+    let newVx = vx;
+    let newVy = vy;
 
-    circle.setPosition(x, y);
+    let newX = x + frame.timeDiff * vx;
+    let newY = y + frame.timeDiff * vy;
+    let impactTime;
 
-    if (didCircleCollideWithBoundingBox(circle, boundingBox)) {
-      console.log("past box")
-      vx *= -1;
-      circle.setVelocity(vx, vy);
+    if (newX < left) {
+      impactTime = (left - x) / vx;
+      newX = left - (frame.timeDiff - impactTime) * vx;
+      newVx *= -1;
+    } else if (newX > right) {
+      impactTime = (right - x) / vx;
+      newX = right - (frame.timeDiff - impactTime) * vx;
+      newVx *= -1;
     }
 
-    this.setState({ circle });
+    circle.setVelocity(newVx, newVy);
+    circle.setPosition(newX, newY);
 
-    // console.log(frame.time);
+    this.setState({ circle });
   }
 
   start = () => { 
