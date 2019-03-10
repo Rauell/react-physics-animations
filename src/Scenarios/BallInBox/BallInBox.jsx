@@ -4,6 +4,28 @@ import { ControlPane, AnimationPane } from '../../Components/Panes';
 import { Circle, Rectangle } from '../../Services/Shapes';
 import { didCircleCollideWithBoundingBox } from '../../Services/CollisionDetector/CollisionDetectionService';
 
+function calculatePositionWithBoundaryCollision(x0, v0, dt, bound1, bound2) {
+  let x = x0 + v0 * dt;
+  let v = v0;
+  let didCollisionOccur = false;
+  let bound = null;
+
+  if (x < bound1) {
+    didCollisionOccur = true;
+    bound = bound1;
+  } else if (x > bound2) {
+    didCollisionOccur = true;
+    bound = bound2;
+  }
+
+  if (didCollisionOccur) {
+    x = 2 * bound - dt * v0 - x0;
+    v *= -1;
+  }
+
+  return { x, x0, v, v0, didCollisionOccur };
+}
+
 class BallInBox extends Component {
   constructor(props) {
     super(props);
@@ -12,8 +34,8 @@ class BallInBox extends Component {
     const initialConditions = {
       x: 800,
       y: 40,
-      vx: 2500 / 1000,
-      vy: 0,
+      vx: 250 / 1000,
+      vy: 300 / 1000,
       radius: 40,
     };
     const circle = new Circle(initialConditions);
@@ -44,27 +66,18 @@ class BallInBox extends Component {
     const { x, y, vx, vy, radius } = circleProps;
     let {left, right, top, bottom } = boundingBox.getEdges();
     left += radius;
+    top += radius;
     right -= radius;
+    bottom -= radius;
 
-    let newVx = vx;
-    let newVy = vy;
+    const xUpdate = calculatePositionWithBoundaryCollision(x, vx, frame.timeDiff, left, right);
+    const yUpdate = calculatePositionWithBoundaryCollision(y, vy, frame.timeDiff, top, bottom);
 
-    let newX = x + frame.timeDiff * vx;
-    let newY = y + frame.timeDiff * vy;
-    let impactTime;
+    circle.setPosition(xUpdate.x, yUpdate.x);
 
-    if (newX < left) {
-      impactTime = (left - x) / vx;
-      newX = left - (frame.timeDiff - impactTime) * vx;
-      newVx *= -1;
-    } else if (newX > right) {
-      impactTime = (right - x) / vx;
-      newX = right - (frame.timeDiff - impactTime) * vx;
-      newVx *= -1;
+    if (xUpdate.didCollisionOccur || yUpdate.didCollisionOccur) {
+      circle.setVelocity(xUpdate.v, yUpdate.v);
     }
-
-    circle.setVelocity(newVx, newVy);
-    circle.setPosition(newX, newY);
 
     this.setState({ circle });
   }
