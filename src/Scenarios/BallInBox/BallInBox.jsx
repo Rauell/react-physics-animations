@@ -81,7 +81,7 @@ class BallInBox extends Component {
 
   reset = () => {
     const { initialConditions } = this.state;
-    const circle = Object.assign({}, initialConditions);
+    const circle = new Circle(initialConditions);
     this.setState({ circle });
   }
 
