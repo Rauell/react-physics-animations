@@ -1,25 +1,38 @@
 import React, { Component } from 'react';
-import Animation, { Circle } from '../../Animations'; 
+import Animation, { Circle as AnimationCircle } from '../../Animations'; 
 import { ControlPane, AnimationPane } from '../../Components/Panes';
- 
+import { Circle, Rectangle } from '../../Services/Shapes';
+import { didCircleCollideWithBoundingBox } from '../../Services/CollisionDetector/CollisionDetectionService';
+
 class BallInBox extends Component {
   constructor(props) {
     super(props);
 
     const isRunning = false;
     const initialConditions = {
-      x: 25,
+      x: 800,
       y: 40,
-      vx: 25,
+      vx: 250,
       vy: 0,
       radius: 40,
     };
-    const circle = Object.assign({}, initialConditions);
+    const circle = new Circle(initialConditions);
+
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    const boundingBox = new Rectangle({
+      width,
+      height,
+      x: width/2,
+      y: height/2,
+    });
   
     this.state = {
       initialConditions,
       circle,
       isRunning,
+      boundingBox,
     };
   }
 
@@ -28,11 +41,20 @@ class BallInBox extends Component {
     if (!isRunning) return false;
 
     // console.log("Calling foo");
-    const { circle } = this.state;
+    const { circle, boundingBox } = this.state;
+    let { x, y, vx, vy } = circle.asObject();
     // const { position, velocity } = circle;
 
-    circle.x += frame.timeDiff/1000 * circle.vx;
-    circle.y += frame.timeDiff/1000 * circle.vy;
+    x += frame.timeDiff/1000 * vx;
+    y += frame.timeDiff/1000 * vy;
+
+    circle.setPosition(x, y);
+
+    if (didCircleCollideWithBoundingBox(circle, boundingBox)) {
+      console.log("past box")
+      vx *= -1;
+      circle.setVelocity(vx, vy);
+    }
 
     this.setState({ circle });
 
@@ -51,12 +73,13 @@ class BallInBox extends Component {
 
   reset = () => {
     const { initialConditions } = this.state;
-    this.setState({ circle: initialConditions });
+    const circle = Object.assign({}, initialConditions);
+    this.setState({ circle });
   }
 
   render() {
-    const { circle, isRunning } = this.state;
-    const {x, y, radius} = circle;
+    const { circle, boundingBox, isRunning } = this.state;
+    const { x, y, radius } = circle;
 
     return (
       <div>
@@ -73,8 +96,13 @@ class BallInBox extends Component {
         </ControlPane>
       
         <AnimationPane>
-          <Animation isRunning={isRunning} onFrameUpdate={(frame) => this.foo(frame)}>
-            <Circle 
+          <Animation 
+            isRunning={isRunning} 
+            onFrameUpdate={(frame) => this.foo(frame)}
+            width={boundingBox.getWidth()}
+            height={boundingBox.getHeight()}
+          >
+            <AnimationCircle 
               fill="green" 
               radius={radius}
               x={x}
