@@ -1,7 +1,7 @@
 import React from 'react';
 
 const AnimationPane = (props) => (
-  <div className="animationPane">
+  <div className="pane pane-animation">
     {props.children}
   </div>
 );

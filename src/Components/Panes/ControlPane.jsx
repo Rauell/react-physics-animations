@@ -1,7 +1,7 @@
 import React from 'react'; 
 
 const ControlPane = props => (
-  <div className="controlPane">
+  <div className="pane pane-control">
     {props.children}
   </div>
 );

@@ -39,14 +39,25 @@ class Animation extends Component {
   }
 
   render() {
-    this.toggleAnimation(this.props.isRunning);
+    const { styles, isRunning, width, height, children} = this.props;
+    this.toggleAnimation(isRunning);
+
+    const stageStyles = { width, height };
+    Object.assign(stageStyles, styles);
 
     return (
-      <Stage width={this.props.width} height={this.props.height}>
-        <Layer ref="layer">
-          {this.props.children}
-        </Layer>
-      </Stage>
+      <div className="animation">
+        <Stage 
+          className="fooBar"
+          style={stageStyles}
+          width={width} 
+          height={height}
+        >
+          <Layer className="baz" ref="layer">
+            {children}
+          </Layer>
+        </Stage>
+      </div>
     );
   }
 }
@@ -54,11 +65,13 @@ class Animation extends Component {
 Animation.defaultProps = {
   width: window.innerWidth,
   height: window.innerHeight,
+  displayStyles: {},
 };
 
 Animation.propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
+  displayStyles: PropTypes.object,
   onFrameUpdate: PropTypes.func.isRequired,
   isRunning: PropTypes.bool.isRequired, 
 };

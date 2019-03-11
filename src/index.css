@@ -8,7 +8,51 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html, body, .scenario, #root{
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.pane {
+  height: 100%;
+}
+
+.pane-control {
+  float: left;
+  width: 20%;
+  background-color: red;
+}
+
+.pane-animation {
+  float: left;
+  width: 80%;
+}
+
+.animation {
+  background-color:gray;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.fooBar {
+  background-color: beige;
+  display: block;
+  margin: auto;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  border-style: inset;
+}
+
+canvas {
+  width:100%;
+  /* background-color: gray; */
+  /* color: yellow; */
+}
+

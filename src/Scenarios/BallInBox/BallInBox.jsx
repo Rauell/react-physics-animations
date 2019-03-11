@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Animation, { Circle as AnimationCircle } from '../../Animations'; 
 import { ControlPane, AnimationPane } from '../../Components/Panes';
 import { Circle, Rectangle } from '../../Services/Shapes';
-import { didCircleCollideWithBoundingBox } from '../../Services/CollisionDetector/CollisionDetectionService';
 
 function calculatePositionWithBoundaryCollision(x0, v0, dt, bound1, bound2) {
   let x = x0 + v0 * dt;
@@ -40,8 +39,11 @@ class BallInBox extends Component {
     };
     const circle = new Circle(initialConditions);
 
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    // const width = window.innerWidth;
+    // const height = window.innerHeight;
+
+    const width = 800;
+    const height = 600;
 
     const boundingBox = new Rectangle({
       width,
@@ -101,16 +103,31 @@ class BallInBox extends Component {
   render() {
     const { circle, boundingBox, isRunning } = this.state;
     const { x, y, radius } = circle;
+    const styleProps = {
+    };
+
+    const controlButton = isRunning ? (
+      <button onClick={this.stop}>
+        Stop
+      </button>
+    ) : (
+      <button onClick={this.start}>
+        Start
+      </button>
+    );
 
     return (
-      <div>
+      <div className="scenario">
         <ControlPane>
-          <button onClick={this.start}>
-            Start
-          </button>
-          <button onClick={this.stop}>
-            Stop
-          </button>
+          { isRunning ? (
+            <button onClick={this.stop}>
+              Stop
+            </button>
+          ) : (
+            <button onClick={this.start}>
+              Start
+            </button>
+          ) }
           <button onClick={this.reset}>
             Reset
           </button>
@@ -122,6 +139,7 @@ class BallInBox extends Component {
             onFrameUpdate={(frame) => this.foo(frame)}
             width={boundingBox.getWidth()}
             height={boundingBox.getHeight()}
+            styles={styleProps}
           >
             <AnimationCircle 
               fill="green" 
