@@ -29,22 +29,19 @@ class BallInBox extends Component {
   constructor(props) {
     super(props);
 
+    const width = 800;
+    const height = 450;
+
     const isRunning = false;
     const initialConditions = {
-      x: 800,
+      x: 540,
       y: 40,
       vx: 250 / 1000,
-      vy: 300 / 1000,
+      vy: 400 / 1000,
       radius: 40,
     };
     const circle = new Circle(initialConditions);
-
-    // const width = window.innerWidth;
-    // const height = window.innerHeight;
-
-    const width = 800;
-    const height = 600;
-
+    console.log(circle.asObject());
     const boundingBox = new Rectangle({
       width,
       height,
@@ -97,25 +94,15 @@ class BallInBox extends Component {
   reset = () => {
     const { initialConditions } = this.state;
     const circle = new Circle(initialConditions);
+
+    console.log(initialConditions);
     this.setState({ circle });
   }
 
   render() {
     const { circle, boundingBox, isRunning } = this.state;
     const { x, y, radius } = circle;
-    const styleProps = {
-    };
-
-    const controlButton = isRunning ? (
-      <button onClick={this.stop}>
-        Stop
-      </button>
-    ) : (
-      <button onClick={this.start}>
-        Start
-      </button>
-    );
-
+    console.log(x, y);
     return (
       <div className="scenario">
         <ControlPane>
@@ -139,7 +126,6 @@ class BallInBox extends Component {
             onFrameUpdate={(frame) => this.foo(frame)}
             width={boundingBox.getWidth()}
             height={boundingBox.getHeight()}
-            styles={styleProps}
           >
             <AnimationCircle 
               fill="green" 

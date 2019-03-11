@@ -39,11 +39,10 @@ class Animation extends Component {
   }
 
   render() {
-    const { styles, isRunning, width, height, children} = this.props;
+    const { isRunning, width, height, children} = this.props;
     this.toggleAnimation(isRunning);
 
     const stageStyles = { width, height };
-    Object.assign(stageStyles, styles);
 
     return (
       <div className="animation">
@@ -65,13 +64,11 @@ class Animation extends Component {
 Animation.defaultProps = {
   width: window.innerWidth,
   height: window.innerHeight,
-  displayStyles: {},
 };
 
 Animation.propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
-  displayStyles: PropTypes.object,
   onFrameUpdate: PropTypes.func.isRequired,
   isRunning: PropTypes.bool.isRequired, 
 };

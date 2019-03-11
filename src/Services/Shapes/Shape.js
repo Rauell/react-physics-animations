@@ -5,6 +5,11 @@ class Shape {
     const {x, y, vx, vy} = props;
     this._position = new Vector(x, y);
     this._velocity = new Vector(vx, vy);
+
+    this.x = x;
+    this.y = y;
+    this.vx = vx;
+    this.vy = vy;
   }
 
   asObject() {
