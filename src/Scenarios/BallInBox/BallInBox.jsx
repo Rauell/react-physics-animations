@@ -154,6 +154,26 @@ class BallInBox extends Component {
   onIntialVelocityXChange = (event) => this.onIntialVelocityChange(event, 'vx'); 
   onIntialVelocityYChange = (event) => this.onIntialVelocityChange(event, 'vy'); 
 
+  onDragMove = (event) => {
+    const { x, y } = event.target.absolutePosition();
+
+    this.onInitialPositionXChange({ target: { value: x } });
+    this.onInitialPositionYChange({ target: { value: y } });
+  }
+
+  onDragMoveBounds = (position) => {
+    let { x, y } = position;
+    const { interiorBox: {left, right, top, bottom } } = this.state;
+
+    const xCollision = getCollision(x, left, right);
+    const yCollision = getCollision(y, top, bottom);
+
+    if (xCollision.didCollisionOccur) x = xCollision.bound;
+    if (yCollision.didCollisionOccur) y = yCollision.bound;
+
+    return { x, y };
+  }
+
   render() {
     const { 
       boundingBox, 
@@ -230,7 +250,10 @@ class BallInBox extends Component {
               fill="green" 
               radius={radius}
               x={x}
-              y={y} 
+              y={y}
+              draggable={!isRunning}
+              onDragMove={this.onDragMove}
+              dragBoundFunc={this.onDragMoveBounds}
             />
           </Animation>
         </AnimationPane>
