@@ -9,12 +9,6 @@ class Circle extends Shape {
   }
 
   getRadius = () => this.radius;
-
-  asObject() {
-    const props = super.asObject();
-    Object.assign(props, { radius: this.radius });
-    return props;
-  }
 }
 
 export default Circle;
