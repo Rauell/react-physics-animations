@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Animation, { Circle as AnimationCircle } from '../../Animations'; 
 import { ControlPane, AnimationPane } from '../../Components/Panes';
 import { Circle, Rectangle } from '../../Services/Shapes';
+import { ControlPosition, ControlVelocity } from '../../Components/Panes/ControlPane';
 
 function getCollision(x, bound1, bound2) {
   let bound = null;
@@ -194,49 +195,21 @@ class BallInBox extends Component {
           isRunning={isRunning}
           isPaused={isPaused}
         >
-          <div>
-            <label>X</label>
-            <input 
-              type="number"
-              step="1"
-              min={boundingBox.left + radius} 
-              max={boundingBox.right - radius}
-              disabled={isRunning}
-              value={initialConditions.x}
-              onChange={this.onInitialPositionXChange}
-            />
-
-            <label>Y</label>
-            <input 
-              type="number"
-              step="1" 
-              min={boundingBox.top + radius} 
-              max={boundingBox.bottom - radius}
-              value={initialConditions.y}
-              disabled={isRunning}
-              onChange={this.onInitialPositionYChange}
-            />
-          </div>
+          <ControlPosition
+            isRunning={isRunning}
+            x={initialConditions.x}
+            y={initialConditions.y}
+            onChangeX={this.onInitialPositionXChange}
+            onChangeY={this.onInitialPositionYChange}
+          />
           <br/>
-          <div>
-            <label>VX</label>
-            <input 
-              type="number" 
-              step="1"
-              value={initialConditions.vx * velocityMagnitudeTransform}
-              disabled={isRunning}
-              onChange={this.onIntialVelocityXChange}
-            />
-
-            <label>VY</label>
-            <input 
-              type="number"
-              step="1" 
-              value={initialConditions.vy * velocityMagnitudeTransform}
-              disabled={isRunning}
-              onChange={this.onIntialVelocityYChange}
-            />
-          </div>
+          <ControlVelocity
+            isRunning={isRunning}
+            vx={initialConditions.vx * velocityMagnitudeTransform}
+            vy={initialConditions.vy * velocityMagnitudeTransform}
+            onChangeX={this.onIntialVelocityXChange}
+            onChangeY={this.onIntialVelocityYChange}
+          />
         </ControlPane>
       
         <AnimationPane>
