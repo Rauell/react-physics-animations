@@ -12,7 +12,7 @@ const ControlPosition = props => {
       </label>
       <ControlInput 
         type="number"
-        step="1"
+        step={1}
         isRunning={isRunning}
         value={x}
         label="X"
@@ -20,7 +20,7 @@ const ControlPosition = props => {
       />
       <ControlInput 
         type="number"
-        step="1"
+        step={1}
         isRunning={isRunning}
         value={y}
         label="Y"

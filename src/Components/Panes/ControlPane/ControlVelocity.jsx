@@ -15,7 +15,7 @@ const ControlVelocity = props => {
       </label>
       <ControlInput 
         type="number"
-        step="1"
+        step={1}
         isRunning={isRunning}
         value={vx}
         label={xDot}
@@ -23,7 +23,7 @@ const ControlVelocity = props => {
       />
       <ControlInput 
         type="number"
-        step="1"
+        step={1}
         isRunning={isRunning}
         value={vy}
         label={yDot}
@@ -35,8 +35,8 @@ const ControlVelocity = props => {
 
 ControlVelocity.propTypes = {
   isRunning: PropTypes.bool.isRequired,
-  x: PropTypes.number.isRequired,
-  y: PropTypes.number.isRequired,
+  vx: PropTypes.number.isRequired,
+  vy: PropTypes.number.isRequired,
   onChangeX: PropTypes.func,
   onChnageY: PropTypes.func
 };

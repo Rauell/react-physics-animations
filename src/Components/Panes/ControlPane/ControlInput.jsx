@@ -40,7 +40,7 @@ ControlInput.propTypes = {
   onChange: PropTypes.func,
 };
 
-ControlInput.defaultPropts = {
+ControlInput.defaultProps = {
   isRunning: true,
   step: null,
   onChange: null,

@@ -1,1 +1,4 @@
-export {default as Circle} from './Circle';
+import AnimationShape from './AnimationShape';
+
+export { AnimationShape };
+export { default as AnimationCirlce } from './AnimationCircle';

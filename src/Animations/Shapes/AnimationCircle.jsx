@@ -2,8 +2,8 @@ import React from 'react';
 import { Circle as KonvaCircle } from 'react-konva';
 
 
-const Circle = props => (
+const AnimationCircle = props => (
   <KonvaCircle {...props} />
 );
 
-export default Circle;
+export default AnimationCircle;

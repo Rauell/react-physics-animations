@@ -1,4 +1,4 @@
-import Animation from './Animation';
+import AnimationCanvas from './AnimationCanvas';
 
-export default Animation;
+export default AnimationCanvas;
 export * from './Shapes';
